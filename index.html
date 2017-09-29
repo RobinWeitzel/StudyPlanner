@@ -237,7 +237,12 @@
                     mark: $('#mark').val()
                 }
 
-                modulesSelected.push(module);
+                if(modulesSelected) {
+                    modulesSelected.push(module);
+                } else {
+                    modulesSelected = [];
+                    modulesSelected.push(module);
+                }
                 localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
                 displayModule(module);
                 updateSum();
