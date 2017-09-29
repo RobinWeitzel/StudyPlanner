@@ -134,8 +134,10 @@
 
                     var helperArray = [];
 
-                    for(var i = 0; i < modulesSelected.length; i++) {
-                        helperArray.push(modulesSelected[i].moduleId);
+                    if(modulesSelected) {
+                        for(var i = 0; i < modulesSelected.length; i++) {
+                            helperArray.push(modulesSelected[i].moduleId);
+                        }
                     }
 
                     if(mg.indexOf($('#moduleGroup').val()) >= 0 && helperArray.indexOf(currentKey) < 0) {
