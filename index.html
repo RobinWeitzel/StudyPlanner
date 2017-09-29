@@ -207,7 +207,7 @@
                 var sumMarks = 0;
                 var avgMarks;
                 var counter = 0;
-                if(modulesSelected.length > 0) {
+                if(modulesSelected && modulesSelected > 0) {
                     for(var i = 0; i < modulesSelected.length; i++) {
                         if(parseFloat(modulesSelected[i].mark) <= 4) {
                             sumPoints += parseInt(modulesSelected[i].moduleLp);
