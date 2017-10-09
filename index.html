@@ -254,7 +254,7 @@
             }
 
             $('#sum').text(sumPoints);
-            $('#avg').text(avgMarks);
+            $('#avg').text(isNaN(avgMarks) ? 0 : avgMarks);
         }
 
         function showModuleSum() {
@@ -263,17 +263,23 @@
 
             for (var i = 0; i < modulesSelected.length; i++) {
                 if (helperDict[modulesSelected[i].moduleGroup] === undefined) {
-                    helperDict[modulesSelected[i].moduleGroup] = modulesSelected[i].mark !== "" && parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0;
+                    helperDict[modulesSelected[i].moduleGroup] = {
+                        success: modulesSelected[i].mark !== "" && parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0,
+                        planned: modulesSelected[i].mark === "" || parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0
+                    };
                 } else {
-                    helperDict[modulesSelected[i].moduleGroup] += modulesSelected[i].mark !== "" && parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0;
+                    helperDict[modulesSelected[i].moduleGroup].success += modulesSelected[i].mark !== "" && parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0;
+                    helperDict[modulesSelected[i].moduleGroup].planned += modulesSelected[i].mark === "" || parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0;
                 }
             }
 
             $('#moduleSumTable').empty();
             var totalSum = 0;
+            var totalSumPlanned = 0;
 
             Object.keys(helperDict).forEach(function (key) {
-                totalSum += helperDict[key];
+                totalSum += helperDict[key].success;
+                totalSumPlanned += helperDict[key].planned;
                 helperArray.push(key);
             });
 
@@ -282,12 +288,12 @@
             for (var i = 0; i < helperArray.length; i++) {
                 var html = `<tr>
                                     <td>${helperArray[i]}</td>
-                                    <td>${helperDict[helperArray[i]]}</td>
+                                    <td>${helperDict[helperArray[i]].success} <span style="color: grey">(${helperDict[helperArray[i]].planned})</span></td>
                                 </tr>`;
                 $('#moduleSumTable').append(html);
             }
 
-            $('#sumFoot').text(totalSum);
+            $('#sumFoot').html(`${totalSum} <span style="color: grey">(${totalSumPlanned})</span>`);
         }
 
         function markModulesGreen() {
