@@ -234,6 +234,7 @@
             localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
             $(this).parents('tr').remove();
             updateSum();
+            showModuleSum();
         });
 
         function updateSum() {
@@ -254,7 +255,7 @@
             }
 
             $('#sum').text(sumPoints);
-            $('#avg').text(isNaN(avgMarks) ? 0 : avgMarks);
+            $('#avg').text(isNaN(avgMarks) ? "" : avgMarks);
         }
 
         function showModuleSum() {
