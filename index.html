@@ -77,6 +77,13 @@
                     <tbody id="moduleSumTable">
     
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td style="font-weight: bold; text-align: right;">Summe:</td>
+                            <td style="font-weight: bold;" id="sumFoot"></td>
+                        </tr>
+
+                    </tfoot>
                 </table>
             </div>
 
@@ -263,8 +270,10 @@
             }
 
             $('#moduleSumTable').empty();
+            var totalSum = 0;
 
             Object.keys(helperDict).forEach(function (key) {
+                totalSum += helperDict[key];
                 helperArray.push(key);
             });
 
@@ -277,6 +286,8 @@
                                 </tr>`;
                 $('#moduleSumTable').append(html);
             }
+
+            $('#sumFoot').text(totalSum);
         }
 
         function markModulesGreen() {
