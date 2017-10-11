@@ -262,6 +262,10 @@
             var helperDict = {};
             var helperArray = [];
 
+            if(modulesSelected === undefined) {
+                return false;
+            }
+
             for (var i = 0; i < modulesSelected.length; i++) {
                 if (helperDict[modulesSelected[i].moduleGroup] === undefined) {
                     helperDict[modulesSelected[i].moduleGroup] = {
@@ -454,7 +458,7 @@
             var item;
             var rx = /^[A-Z]+-[0-9]+/;
             var rx2 = /(\.|\s|\+)+[0-9]+$/;
-            var rx3 = /(?=(\([0-9]*\sECTS\/LP)).*$/;
+            var rx3 = /(?=(\([0-9]*\sECTS(\/|\s)+LP)).*$/;
             var rx4 = /\([0-9]*\sECTS/;
             for (j = 2; j < pageDict[i].items.length; j++) {
                 item = pageDict[i].items[j];
