@@ -405,7 +405,8 @@
                     if (pageDict[i].items[0].str !== id) {
                         if (id) {
                             trueId = rx.exec(id)[0];
-                            moduleDict[trueId]["modulePages"] = pages;                        }
+                            moduleDict[trueId]["modulePages"] = pages;
+                        }
 
                         id = pageDict[i].items[0].str;
                         pages = [];
