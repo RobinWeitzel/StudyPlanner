@@ -407,8 +407,7 @@
                     if (pageDict[i].items[0].str !== id) {
                         if (id) {
                             trueId = rx.exec(id)[0];
-                            moduleDict[trueId]["modulePages"] = pages;
-                        }
+                            moduleDict[trueId]["modulePages"] = pages;                        }
 
                         id = pageDict[i].items[0].str;
                         pages = [];
@@ -427,7 +426,8 @@
             var x = 2;
             
             if(uni.startsWith('Lehrveranstaltungen')) {
-                uni = page1.items[1].str + " " + page1.items[2].str 
+                uni = page1.items[1].str + " " + page1.items[2].str;
+                x = 3;
             }
 
             // Check if the PDF contains a Modulhandbuch from the university of Augsburg
