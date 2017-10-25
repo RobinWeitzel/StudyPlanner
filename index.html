@@ -420,16 +420,21 @@
             }
         }
 
-
         function parsePdf(pageDict) {
             var page1 = pageDict[0];
             var uni = page1.items[0].str + " " + page1.items[1].str;
+            
+            var x = 2;
+            
+            if(uni.startsWith('Lehrveranstaltungen')) {
+                uni = page1.items[1].str + " " + page1.items[2].str 
+            }
 
             // Check if the PDF contains a Modulhandbuch from the university of Augsburg
             if (uni === "Universität Augsburg Modulhandbuch") {
                 var course;
-                for (var j = 2; !page1.items[j].str.startsWith("Fakultät"); j++) {
-                    if (j === 2) {
+                for (j = x; !page1.items[j].str.startsWith("Fakultät"); j++) {
+                    if (j === x) {
                         course = page1.items[2].str
                     } else {
                         course += page1.items[j].str;
