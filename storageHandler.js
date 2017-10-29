@@ -7,44 +7,39 @@ function updateSum() {
     remoteStorage["study-planner"].listCourses().then(objects  => {
         for (var path in objects) {
             console.log(path, objects[path]);
-          }
-    });
 
-    if (modulesSelected) {
-        for (var i = 0; i < modulesSelected.length; i++) {
-            if (parseFloat(modulesSelected[i].mark) <= 4) {
-                sumPoints += parseInt(modulesSelected[i].moduleLp);
-                sumMarks += parseFloat(modulesSelected[i].mark);
+            if (parseFloat(objects[path].mark) <= 4) {
+                sumPoints += parseInt(objects[path].moduleLp);
+                sumMarks += parseFloat(objects[path].mark);
                 counter++;
             }
         }
-
         avgMarks = sumMarks / counter;
-    }
-
-    $('#sum').text(sumPoints);
-    $('#avg').text(isNaN(avgMarks) ? "" : avgMarks);
+        $('#sum').text(sumPoints);
+        $('#avg').text(isNaN(avgMarks) ? "" : avgMarks);
+    });
 }
 
 function showModuleSum() {
     var helperDict = {};
     var helperArray = [];
 
-    if(modulesSelected === undefined || !modulesSelected) {
-        return false;
-    }
-
-    for (var i = 0; i < modulesSelected.length; i++) {
-        if (helperDict[modulesSelected[i].moduleGroup] === undefined) {
-            helperDict[modulesSelected[i].moduleGroup] = {
-                success: modulesSelected[i].mark !== "" && parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0,
-                planned: modulesSelected[i].mark === "" || parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0
-            };
-        } else {
-            helperDict[modulesSelected[i].moduleGroup].success += modulesSelected[i].mark !== "" && parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0;
-            helperDict[modulesSelected[i].moduleGroup].planned += modulesSelected[i].mark === "" || parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0;
+    remoteStorage["study-planner"].listCourses().then(objects  => {
+        for (var path in objects) {
+            if (helperDict[objects[path].moduleGroup] === undefined) {
+                helperDict[modulesSelected[i].moduleGroup] = {
+                    success: objects[path].mark !== "" && parseFloat(objects[path].mark) <= 4 ? parseInt(objects[path].moduleLp) : 0,
+                    planned: objects[path].mark === "" || parseFloat(objects[path].mark) <= 4 ? parseInt(objects[path].moduleLp) : 0
+                };
+            } else {
+                helperDict[modulesSelected[i].moduleGroup].success += modulesSelected[i].mark !== "" && parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0;
+                helperDict[modulesSelected[i].moduleGroup].planned += modulesSelected[i].mark === "" || parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0;
+            }
         }
-    }
+        avgMarks = sumMarks / counter;
+        $('#sum').text(sumPoints);
+        $('#avg').text(isNaN(avgMarks) ? "" : avgMarks);
+    });
 
     $('#moduleSumTable').empty();
     var totalSum = 0;
