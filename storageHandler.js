@@ -36,9 +36,6 @@ function showModuleSum() {
                 helperDict[objects[path].moduleGroup].planned += objects[path].mark === "" || parseFloat(objects[path].mark) <= 4 ? parseInt(objects[path].moduleLp) : 0;
             }
         }
-        avgMarks = sumMarks / counter;
-        $('#sum').text(sumPoints);
-        $('#avg').text(isNaN(avgMarks) ? "" : avgMarks);
     });
 
     $('#moduleSumTable').empty();
