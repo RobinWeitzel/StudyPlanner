@@ -3,6 +3,13 @@ function updateSum() {
     var sumMarks = 0;
     var avgMarks;
     var counter = 0;
+
+    remoteStorage["study-planner"].listCourses().then(objects  => {
+        for (var path in objects) {
+            console.log(path, objects[path]);
+          }
+    });
+
     if (modulesSelected) {
         for (var i = 0; i < modulesSelected.length; i++) {
             if (parseFloat(modulesSelected[i].mark) <= 4) {
@@ -98,10 +105,6 @@ function showModuleSum() {
         $(document).on('click', '.deleteButton', function () {
             var id = $(this).parents('tr').attr('data-id');;
             remoteStorage["study-planner"].removeCourse(id);
-        });
-
-        remoteStorage.on('ready', function() {
-            
         });
     }
 

@@ -190,9 +190,7 @@
 
         $(document).on('change', '#module', function () {
             renderPDF();
-        });
-
-        
+        });   
 
         function renderPDF() {
             var id = $('#module').val();
@@ -224,10 +222,6 @@
             }
         }
 
-        
-
-        
-        
         function markModulesGreen() {
             $('#moduleTable tr').each(function () {
                 if ($(this).find('.grade').text() !== "" && !isNaN($(this).find('.grade').text()) && parseFloat($(this).find('.grade').text()) <= 4.0) {
