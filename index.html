@@ -288,11 +288,11 @@
                     object.mark = text;
                 }
                 remoteStorage["study-planner"].addCourse(object);
+                updateSum();
+                markModulesGreen();
+                showModuleSum();
             });
-            //localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
-            updateSum();
-            markModulesGreen();
-            showModuleSum();
+            //localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));          
         });
 
         $('#FileUpload').on('change', function () {
