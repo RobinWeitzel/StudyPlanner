@@ -353,7 +353,7 @@
             remoteStorage.studyPlanner.listCourses().then(function (courses) {
                 for(let course of courses) {
                     if(ids.indexOf(course.moduleId) < 0) {
-                        remoteStorage.studyPlanner.addCourse(modulesSelected[i]);
+                        remoteStorage.studyPlanner.addCourse(course);
                     }
                 }
             });
