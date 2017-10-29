@@ -349,14 +349,9 @@
         }
 
         function transferToRemote() {
-            const ids = modulesSelected.map(m => m.moduleId);
-            remoteStorage.studyPlanner.listCourses().then(function (courses) {
-                for(let course in courses) {
-                    if(ids.indexOf(course.moduleId) < 0) {
-                        remoteStorage.studyPlanner.addCourse(course);
-                    }
-                }
-            });
+            for(let module of modulesSelected) {
+                remoteStorage.studyPlanner.addCourse(module);
+            }
         }
 
         function addModule() {
