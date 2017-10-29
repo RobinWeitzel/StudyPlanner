@@ -3,15 +3,15 @@
         // Enable change events for changes in the same browser window
         RemoteStorage.config.changeEvents.window = true;
 
-        // Claim read/write access for the /study-planner category
+        // Claim read/write access for the ["study-planner"] category
         remoteStorage.access.claim('study-planner', 'rw');
 
         // Display the RS connect widget
         remoteStorage.displayWidget();
 
-        remoteStorage.study-planner.init();
+        remoteStorage["study-planner"].init();
 
-        remoteStorage.study-planner.on('change', function(event) {
+        remoteStorage["study-planner"].on('change', function(event) {
             if(event.newValue && (! event.oldValue)) {
                 console.log('Change from '+event.origin+' (add)', event);
                 displayModule(event.newValue);
@@ -34,7 +34,7 @@
 
             $(document).on('click', '.deleteButton', function () {
                 var id = $(this).parents('tr').attr('data-id');;
-                remoteStorage.study-planner.removeCourse(id);
+                remoteStorage["study-planner"].removeCourse(id);
             });
         });
     }
