@@ -226,19 +226,8 @@
                 });
 
                 $(document).on('click', '.deleteButton', function () {
-                    var id = $(this).parents('tr').attr('data-id');
-
-                    for (var i = 0; i < modulesSelected.length; i++) {
-                        if (modulesSelected[i].moduleId === id) {
-                            break;
-                        }
-                    }
-                    modulesSelected.splice(i, 1);
+                    var id = $(this).parents('tr').attr('data-id');;
                     remoteStorage.studyPlanner.removeCourse(id);
-                    localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
-                    $(this).parents('tr').remove();
-                    updateSum();
-                    showModuleSum();
                 });
             });
         }
@@ -371,14 +360,6 @@
 
             remoteStorage.studyPlanner.addCourse(module);
 
-            if (modulesSelected) {
-                modulesSelected.push(module);
-            } else {
-                modulesSelected = [];
-                modulesSelected.push(module);
-            }
-            localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
-            displayModule(module);
             updateSum();
             markModulesGreen();
             showModuleSum();
