@@ -120,7 +120,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-                        <button type="button" class="btn btn-primary" onclick="addModule()">Hinzufügen</button>
+                        <button type="button" class="btn btn-primary addButton">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -204,6 +204,43 @@
             remoteStorage.displayWidget();
 
             remoteStorage.studyPlanner.init();
+
+            remoteStorage.studyPlanner.on('change', function(event) {
+                if(event.newValue && (! event.oldValue)) {
+                    console.log('Change from '+event.origin+' (add)', event);
+                    displayModule(event.newValue);
+                }
+                else if((! event.newValue) && event.oldValue) {
+                    console.log('Change from '+event.origin+' (remove)', event);
+                    hideModule(event.relativePath);
+                }
+                else if(event.newValue && event.oldValue) {
+                    console.log('Change from '+event.origin+' (change)', event);
+                    // TODO update module
+                }
+            });
+
+            remoteStorage.on('ready', function() {
+                $(document).on('click', '.addButton', function(event) {
+                    addModule();   
+                });
+
+                $(document).on('click', '.deleteButton', function () {
+                    var id = $(this).parents('tr').attr('data-id');
+
+                    for (var i = 0; i < modulesSelected.length; i++) {
+                        if (modulesSelected[i].moduleId === id) {
+                            break;
+                        }
+                    }
+                    modulesSelected.splice(i, 1);
+                    remoteStorage.studyPlanner.removeCourse(id);
+                    localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
+                    $(this).parents('tr').remove();
+                    updateSum();
+                    showModuleSum();
+                });
+            });
         }
 
         function renderPDF() {
@@ -236,20 +273,11 @@
             }
         }
 
-        $(document).on('click', '.deleteButton', function () {
-            var id = $(this).parents('tr').attr('data-id')
-
-            for (var i = 0; i < modulesSelected.length; i++) {
-                if (modulesSelected[i].moduleId === id) {
-                    break;
-                }
-            }
-            modulesSelected.splice(i, 1);
-            localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
-            $(this).parents('tr').remove();
+        function hideModule(id) {
+            $(`#moduleTable tr[data-id="${id}"]`).remove();
             updateSum();
             showModuleSum();
-        });
+        }
 
         function updateSum() {
             var sumPoints = 0;
@@ -340,6 +368,8 @@
                 semester: $('#semester').val(),
                 mark: $('#mark').val()
             }
+
+            remoteStorage.studyPlanner.addCourse(module);
 
             if (modulesSelected) {
                 modulesSelected.push(module);
