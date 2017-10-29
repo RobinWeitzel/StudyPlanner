@@ -32,8 +32,8 @@ function showModuleSum() {
                     planned: objects[path].mark === "" || parseFloat(objects[path].mark) <= 4 ? parseInt(objects[path].moduleLp) : 0
                 };
             } else {
-                helperDict[modulesSelected[i].moduleGroup].success += modulesSelected[i].mark !== "" && parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0;
-                helperDict[modulesSelected[i].moduleGroup].planned += modulesSelected[i].mark === "" || parseFloat(modulesSelected[i].mark) <= 4 ? parseInt(modulesSelected[i].moduleLp) : 0;
+                helperDict[objects[path].moduleGroup].success += objects[path].mark !== "" && parseFloat(objects[path].mark) <= 4 ? parseInt(objects[path].moduleLp) : 0;
+                helperDict[objects[path].moduleGroup].planned += objects[path].mark === "" || parseFloat(objects[path].mark) <= 4 ? parseInt(objects[path].moduleLp) : 0;
             }
         }
         avgMarks = sumMarks / counter;
