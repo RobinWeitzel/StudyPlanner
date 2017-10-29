@@ -1,4 +1,4 @@
-RemoteStorage.defineModule('studyPlanner', function (privateClient) {
+RemoteStorage.defineModule('study-planner', function (privateClient) {
 
     privateClient.declareType('course', {
         "type": "object",
