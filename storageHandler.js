@@ -27,7 +27,7 @@ function showModuleSum() {
     remoteStorage["study-planner"].listCourses().then(objects  => {
         for (var path in objects) {
             if (helperDict[objects[path].moduleGroup] === undefined) {
-                helperDict[modulesSelected[i].moduleGroup] = {
+                helperDict[objects[path].moduleGroup] = {
                     success: objects[path].mark !== "" && parseFloat(objects[path].mark) <= 4 ? parseInt(objects[path].moduleLp) : 0,
                     planned: objects[path].mark === "" || parseFloat(objects[path].mark) <= 4 ? parseInt(objects[path].moduleLp) : 0
                 };
