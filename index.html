@@ -349,13 +349,14 @@
         }
 
         function transferToRemote() {
-            for(let i = 0; i < modulesSelected.length; i++) {
-                remoteStorage.studyPlanner.getCourse(modulesSelected[i].moduleId).then(function(module) {
-                    if(module === null) {
+            const ids = modulesSelected.map(m => m.moduleId);
+            listCourses().then(function (courses) {
+                for(let course of courses) {
+                    if(ids.indexOf(course.moduleId) < 0) {
                         remoteStorage.studyPlanner.addCourse(modulesSelected[i]);
                     }
-                });
-            }
+                }
+            });
         }
 
         function addModule() {
