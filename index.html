@@ -279,9 +279,10 @@
                 }
             }
             const text = $(this).text();
+            const sem = $(this).hasClass('semester');
 
             remoteStorage["study-planner"].getCourse(id).then(function (object) {
-                if ($(this).hasClass('semester')) {
+                if (sem) {
                     object.semester = text;
                 } else {
                     object.mark = text;
