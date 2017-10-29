@@ -26,6 +26,8 @@ RemoteStorage.defineModule('studyPlanner', function (privateClient) {
                 return privateClient.storeObject('course', course.moduleId, course);
             },
 
+            getCourse: privateClient.getObject.bind(privateClient),
+
             removeCourse: privateClient.remove.bind(privateClient),
 
             listCourses: function () {

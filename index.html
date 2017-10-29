@@ -221,6 +221,7 @@
             });
 
             remoteStorage.on('ready', function() {
+                transferToRemote();
                 $(document).on('click', '.addButton', function(event) {
                     addModule();   
                 });
@@ -345,6 +346,16 @@
                     $(this).removeClass('danger');
                 }
             });
+        }
+
+        function transferToRemote() {
+            for(let i = 0; o < modulesSelected.length; i++) {
+                remoteStorage.studyPlanner.getCourse(modulesSelected[i].moduleId).then(function(module) {
+                    if(module === null) {
+                        remoteStorage.studyPlanner.addCourse(modulesSelected[i]);
+                    }
+                });
+            }
         }
 
         function addModule() {
@@ -640,7 +651,7 @@
 
             if (modulesSelected) {
                 for (var i = 0; i < modulesSelected.length; i++) {
-                    displayModule(modulesSelected[i]);
+                    //displayModule(modulesSelected[i]);
                 }
             }
 
