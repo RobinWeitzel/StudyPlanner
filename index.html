@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study-planner</title>
+    <title["Study-planner"]</title>
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
@@ -245,7 +245,7 @@
 
         function transferToRemote() {
             for(let module of modulesSelected) {
-                remoteStorage.study-planner.addCourse(module);
+                remoteStorage["study-planner"].addCourse(module);
             }
             modulesSelected = [];
             localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
@@ -262,7 +262,7 @@
                 mark: $('#mark').val()
             }
 
-            remoteStorage.study-planner.addCourse(module);
+            remoteStorage["study-planner"].addCourse(module);
 
             updateSum();
             markModulesGreen();
@@ -282,13 +282,13 @@
             }
             const text = $(this).text();
             
-            remoteStorage.study-planner.getCourse(id).then(function(object) {
+            remoteStorage["study-planner"].getCourse(id).then(function(object) {
                 if ($(this).hasClass('semester')) {
                     object.semester = text;
                 } else {
                     object.mark = text;
                 }
-                remoteStorage.study-planner.addCourse(object);
+                remoteStorage["study-planner"].addCourse(object);
             });
             //localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
             updateSum();

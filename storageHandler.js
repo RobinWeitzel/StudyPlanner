@@ -90,16 +90,18 @@ function showModuleSum() {
             }
         });
 
-        remoteStorage.on('ready', function() {
-            transferToRemote();
-            $(document).on('click', '.addButton', function(event) {
-                addModule();   
-            });
+        transferToRemote();
+        $(document).on('click', '.addButton', function(event) {
+            addModule();   
+        });
 
-            $(document).on('click', '.deleteButton', function () {
-                var id = $(this).parents('tr').attr('data-id');;
-                remoteStorage["study-planner"].removeCourse(id);
-            });
+        $(document).on('click', '.deleteButton', function () {
+            var id = $(this).parents('tr').attr('data-id');;
+            remoteStorage["study-planner"].removeCourse(id);
+        });
+
+        remoteStorage.on('ready', function() {
+            
         });
     }
 
