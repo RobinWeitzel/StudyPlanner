@@ -129,7 +129,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/remoteStorage/0.14.0/remotestorage.js"></script>
+    <script src="remotestorage.js"></script>
     <script src="customModule.js"></script>
     <script src="pdf.js" type="text/javascript"></script>
     <script src="pdf.worker.js" type="text/javascript"></script>
@@ -352,6 +352,8 @@
             for(let module of modulesSelected) {
                 remoteStorage.studyPlanner.addCourse(module);
             }
+            modulesSelected = [];
+            localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
         }
 
         function addModule() {
@@ -387,13 +389,17 @@
                     break;
                 }
             }
-
-            if ($(this).hasClass('semester')) {
-                modulesSelected[i].semester = $(this).text();
-            } else {
-                modulesSelected[i].mark = $(this).text();
-            }
-            localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
+            const text = $(this).text();
+            
+            remoteStorage.studyPlanner.getCourse(id).then(function(object) {
+                if ($(this).hasClass('semester')) {
+                    object.semester = text;
+                } else {
+                    object.mark = text;
+                }
+                remoteStorage.studyPlanner.addCourse(object);
+            });
+            //localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
             updateSum();
             markModulesGreen();
             showModuleSum();
