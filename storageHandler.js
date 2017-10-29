@@ -74,10 +74,19 @@ function showModuleSum() {
 
         remoteStorage["study-planner"].init();
 
+        remoteStorage["study-planner"].listCourses().then(objects  => {
+            for (var path in objects) {
+                console.log(path, objects[path]);
+                displayModule(objects[path]);
+            }
+        });
+
         remoteStorage["study-planner"].on('change', function(event) {
+            console.log('Change from '+event.origin+' (add)', event);
             if(event.newValue && (! event.oldValue)) {
-                console.log('Change from '+event.origin+' (add)', event);
-                displayModule(event.newValue);
+                if(event.origin !== "local") { 
+                    displayModule(event.newValue);
+                }
             }
             else if((! event.newValue) && event.oldValue) {
                 console.log('Change from '+event.origin+' (remove)', event);
