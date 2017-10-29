@@ -129,6 +129,8 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/remoteStorage/0.14.0/remotestorage.js"></script>
+    <script src="customModule.js"></script>
     <script src="pdf.js" type="text/javascript"></script>
     <script src="pdf.worker.js" type="text/javascript"></script>
     <script>
@@ -139,6 +141,7 @@
 
         $(document).ready(function () {
             loadSave();
+            init();
         });
 
         $('#addButton').on('click', function () {
@@ -189,6 +192,19 @@
         $(document).on('change', '#module', function () {
             renderPDF();
         });
+
+        function init() {
+            // Enable change events for changes in the same browser window
+            RemoteStorage.config.changeEvents.window = true;
+
+            // Claim read/write access for the /studyPlanner category
+            remoteStorage.access.claim('studyPlanner', 'rw');
+
+            // Display the RS connect widget
+            remoteStorage.displayWidget();
+
+            remoteStorage.studyPlanner.init();
+        }
 
         function renderPDF() {
             var id = $('#module').val();
