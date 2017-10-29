@@ -349,7 +349,7 @@
         }
 
         function transferToRemote() {
-            for(let i = 0; o < modulesSelected.length; i++) {
+            for(let i = 0; i < modulesSelected.length; i++) {
                 remoteStorage.studyPlanner.getCourse(modulesSelected[i].moduleId).then(function(module) {
                     if(module === null) {
                         remoteStorage.studyPlanner.addCourse(modulesSelected[i]);
