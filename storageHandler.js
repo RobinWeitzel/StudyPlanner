@@ -96,7 +96,7 @@ function showModuleSum() {
                 // TODO update module
             }
         });
-
+        loadSave();
         transferToRemote();
         $(document).on('click', '.addButton', function (event) {
             addModule();
