@@ -2,618 +2,165 @@
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StudyPlanner</title>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    <title>Study Planner</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
-    <script src="remotestorage.js"></script>
-    <script src="customModule.js"></script>
-    <script src="storageHandler.js"></script>
-    <style>
-        .deleteButton:hover {
-            color: deepskyblue;
-        }
-    </style>
+    <link href="https://use.fontawesome.com/releases/v5.0.7/css/all.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-    <div class="container">
-        <h2>Modulplan</h2>
-        <div class="col-xs-8">
-            <h4>Lade dein aktuelles
-                <a href="https://www.uni-augsburg.de/mhb/">Modulhandbuch</a> hoch.
-            </h4>
+    <header>
+        <div class="container">
 
-            <div class="row">
-                <div class="col-xs-2">
-                    <div class="input-group">
-                        <span class="input-group-btn">
-                            <label class="btn btn-default btn-file">
-                                <span class="glyphicon glyphicon-upload"></span> Hochladen
-                                <input type="file" style="display: none;" id="FileUpload">
-                            </label>
-                        </span>
+            <div id="default-view" class="col-12">
+                <h1>Studienplaner</h1>
+                <h5>
+                    Dieser Studienplaner erlaubt Studenten der Universität Augsburg ihre Modulhandbücher einzulesen.
+                    <br />Anschließend können bereits abgelegte und zukünftige Prüfungen getrackt werden.
+                </h5>
+                <div>
+                    <h3>Schritt 1 (optional)</h3>
+                    <h5>Alle Daten werden nur lokal auf deinem Rechner gespeichert.
+                        <br /> Wenn du auch von anderen Rechnern aus auf die Daten zugreifen möchtest, kannst du über das folgende Button eine Verbindung zu deinem Gogole-Drive oder deiner Dropbox herstellen.
+                        <br /> So bleiben die Daten zu jeder Zeit in deiner Hand.
+                    </h5>
+                    <div id="widget-container"></div>
+                </div>
+                <div>
+                    <h3>Schritt 2</h3>
+                    <h5>
+                        Lese dein aktuelles Modulhandbuch ein. Falls noch nicht geschehen lade es dazu von
+                        <a href="https://www.uni-augsburg.de/mhb/">hier</a> herunter. Dann klicke auf folgendes Button und wähle das Modulhandbuch aus.
+                    </h5>
+                    <form>
+                        <div class="form-group">
+                            <input type="file" class="form-control-file" id="file-browser">
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <h3>Schritt 3</h3>
+                    <h5>Jetzt kannst du deine Module planen.</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th style="text-align: left;">Name</th>
+                                <th style="text-align: center;">Geplantes Fachsemester</th>
+                                <th style="text-align: center;">Note</th>
+                                <th style="text-align: right;">Leistungspunkte</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+
+                        </tbody>
+                        <tfoot>
+                            <tr id="table-foot">
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <button type="button" id="remove-modules" class="btn btn-danger">Module entfernen</button>
+                    <button type="button" id="add-modules" class="btn btn-primary float-right">Module hinzufügen</button>
+                </div>
+            </div>
+            <div id="add-view" class="col-12" style="display: none;">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control" type="text" id="search" placeholder="Suche">
+                            </div>
+                            <div class="col">
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        Filter
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        <button class="dropdown-item filter" data-id="possible" type="button">
+                                            <i class="far fa-square"></i> Nur stattfindende</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th style="text-align: left;">Name</th>
+                                        <th style="text-align: right;">Leistungspunkte</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body2">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" id="add-modules-cancel" class="btn btn-secondary">Abbrechen</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" id="add-modules-confirm" class="btn btn-success float-right">Module hinzufügen</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6" id="canvas-container">
+                        <canvas id="canvas"></canvas>
+                        <div class="row">
+                            <div class="col">
+                                <button type="button" class="btn btn-secondary btn-sm canvas-backward">&lt;</button>
+                            </div>
+                            <div class="col">
+                                <button type="button" class="btn btn-secondary btn-sm float-right canvas-forward">&gt;</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <h4 style="margin-top:30px;margin-bottom:10px;">Anschließend kannst du deine geplanten Module zur Tabelle hinzufügen.
-                <br/> Damit du auf die Module auch von anderen Computer aus zugreifen kannst erstelle <a href="https://5apps.com/users/sign_up?site=storage">hier</a> einen Account.<br/>
-                Anschließend klicke auf die Schaltfläche in der Ecke rechts oben und melde dich an.</h4>
-            <table class="table table-responsive">
-                <thead>
-                    <tr>
-                        <th>Modulgruppe</th>
-                        <th>Modulbezeichnung</th>
-                        <th>LP</th>
-                        <th>geplantes Fachsemester</th>
-                        <th>Note</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="moduleTable">
-
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th></th>
-                        <th>Summe:</th>
-                        <td id="sum"></td>
-                        <th>Durchschnitt:</th>
-                        <td id="avg"></td>
-                    </tr>
-                </tfoot>
-            </table>
-            <button type="button" class="btn pull-right" id="addButton">Modul hinzufügen</button>
         </div>
+    </header>
 
-        <div class="col-xs-4 pull-right">
-            <table class="table table-responsive">
-                <thead>
-                    <tr>
-                        <th>Modulgruppe</th>
-                        <th>Punkte</th>
-                    </tr>
-                </thead>
-                <tbody id="moduleSumTable">
-
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td style="font-weight: bold; text-align: right;">Summe:</td>
-                        <td style="font-weight: bold;" id="sumFoot"></td>
-                    </tr>
-
-                </tfoot>
-            </table>
-        </div>
-
-
-        <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <span class="modal-title" id="exampleModalLabel">Modul hinzufügen</span>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="canvas-container2">
+                    <canvas id="canvas2"></canvas>
+                </div>
+                <div class="modal-footer">
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary btn-sm float-left canvas-backward">&lt;</button>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="moduleGroup">Wähle Modulgruppe:</label>
-                            <select class="form-control" id="moduleGroup">
-                            </select>
-
-                            <label for="module">Wähle Modul:</label>
-                            <select class="form-control" id="module">
-                            </select>
-
-                            <label for="semester">Geplantes Fachsemester:</label>
-                            <input type="text" class="form-control" id="semester">
-
-                            <label for="mark">Note (wenn vorhanden):</label>
-                            <input type="text" class="form-control" id="mark">
-                        </div>
-                        <button type="button" class="btn" id="back">&lt;&lt;</button>
-                        <button type="button" class="btn" id="forward">&gt;&gt;</button>
-                        <div style="overflow: scroll; height: 500px;">
-                            <canvas id="canvas"></canvas>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-                        <button type="button" class="btn btn-primary addButton">Hinzufügen</button>
+                    <div class="col">
+                        <button type="button" class="btn btn-secondary btn-sm float-right canvas-forward">&gt;</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script src="remotestorage.js"></script>
+    <script src="widget.js"></script>
+    <script src="customModule.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
     <script src="pdf.js" type="text/javascript"></script>
     <script src="pdf.worker.js" type="text/javascript"></script>
-    <script>
-        var moduleDict = {};
-        var moduleGroups = [];
-        var modulesSelected = [];
-        var p = 0;
+    <script src="script.js"></script>
 
-        $(document).ready(function () {
-            //loadSave();
-        });
-
-        $('#addButton').on('click', function () {
-
-            $('#moduleGroup').empty();
-            $('#moduleGroup').append('<option disabled selected>Modulgruppe wählen</option>')
-            for (var i = 0; i < moduleGroups.length; i++) {
-                $('#moduleGroup').append("<option value='" + moduleGroups[i] + "'>" + moduleGroups[i] + "</option>");
-            }
-
-            $('#module').empty();
-            $('#semester').val("");
-            $('#mark').val("");
-
-            $('#myModal').modal('show');
-        });
-
-        $(document).on('change', '#moduleGroup', function () {
-            $('#module').empty();
-            $('#module').append('<option value="" disabled selected>Modul wählen</option>')
-            remoteStorage["study-planner"].listCourses().then(objects => {
-                Object.keys(moduleDict).forEach(function (currentKey) {
-                    var mg = moduleDict[currentKey].moduleGroup;
-
-                    var helperArray = [];
-
-                    for (var path in objects) {
-                        helperArray.push(path);
-                    }
-
-                    if (mg.indexOf($('#moduleGroup').val()) >= 0 && helperArray.indexOf(currentKey) < 0) {
-                        $('#module').append("<option value='" + currentKey + "'>" + moduleDict[currentKey].moduleName + "</option>");
-                    }
-                });
-            });
-        });
-
-        $(document).on('click', '#back', function () {
-            p--;
-            renderPDF();
-        });
-
-        $(document).on('click', '#forward', function () {
-            p++;
-            renderPDF();
-        });
-
-        $(document).on('change', '#module', function () {
-            renderPDF();
-        });
-
-        function renderPDF() {
-            var id = $('#module').val();
-            var canvas = document.getElementById('canvas');
-            var context = canvas.getContext('2d');
-
-            var pages = moduleDict[id].modulePages;
-            if (pages !== undefined) {
-                if (p < 0) p = 0;
-                if (p >= pages.length) p = pages.length - 1;
-                var page = pages[p];
-
-                var viewport = page.getViewport(1.4);
-
-
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                var renderContext = {
-                    canvasContext: context,
-                    viewport: viewport
-                };
-                page.render(renderContext);
-            } else {
-                context.canvas.width = 600;
-                context.font = "30px Arial";
-                context.fillText("Modulhandbuch muss eingelesen werden,", 10, 50);
-                context.fillText("damit PDF angezeigt werden kann.", 10, 100);
-            }
-        }
-
-        function markModulesGreen() {
-            $('#moduleTable tr').each(function () {
-                if ($(this).find('.grade').text() !== "" && !isNaN($(this).find('.grade').text()) && parseFloat($(this).find('.grade').text()) <= 4.0) {
-                    $(this).addClass('success');
-                    $(this).removeClass('danger');
-                } else if ($(this).find('.grade').text() !== "" && !isNaN($(this).find('.grade').text()) && parseFloat($(this).find('.grade').text()) > 4.0) {
-                    $(this).removeClass('success');
-                    $(this).addClass('danger');
-                } else {
-                    $(this).removeClass('success');
-                    $(this).removeClass('danger');
-                }
-            });
-        }
-
-        function transferToRemote() {
-            for (let module of modulesSelected) {
-                remoteStorage["study-planner"].addCourse(module);
-            }
-            modulesSelected = [];
-            localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));
-        }
-
-        function addModule() {
-            var moduleId = $('#module').val();
-            var module = {
-                moduleId: moduleId,
-                moduleGroup: $('#moduleGroup').val(),
-                moduleName: moduleDict[moduleId].moduleName,
-                moduleLp: moduleDict[moduleId].moduleLp,
-                semester: $('#semester').val(),
-                mark: $('#mark').val()
-            }
-
-            remoteStorage["study-planner"].addCourse(module);
-
-            updateSum();
-            markModulesGreen();
-            showModuleSum();
-            $('#myModal').modal('hide');
-        }
-
-
-
-        $(document).on('input', 'td > div', function () {
-            var id = $(this).parents('tr').attr('data-id');
-
-            for (var i = 0; i < modulesSelected.length; i++) {
-                if (modulesSelected[i].moduleId === id) {
-                    break;
-                }
-            }
-            const text = $(this).text();
-            const sem = $(this).hasClass('semester');
-
-            remoteStorage["study-planner"].getCourse(id).then(function (object) {
-                if (sem) {
-                    object.semester = text;
-                } else {
-                    object.mark = text;
-                }
-                remoteStorage["study-planner"].addCourse(object);
-                updateSum();
-                markModulesGreen();
-                showModuleSum();
-            });
-            //localStorage.setItem("modulesSelected", JSON.stringify(modulesSelected));          
-        });
-
-        $('#FileUpload').on('change', function () {
-            waitingDialog.show('Lese Modulhandbuch...');
-            moduleDict = {};
-            moduleGroups = [];
-            var file = event.target.files[0];
-            if (file) {
-                var fileReader = new FileReader();
-                fileReader.onload = function (event) {
-                    var typedarray = new Uint8Array(this.result);
-                    PDFJS.getDocument(typedarray).then(function (pdf) {
-                        var pageDict = {};
-                        var truePages = {};
-                        for (var i = 1; i <= pdf.numPages; i++) {
-                            pdf.getPage(i).then(function (page) {
-                                page.getTextContent().then(function (textContent) {
-                                    truePages[page.pageIndex] = page;
-                                    pageDict[page.pageIndex] = textContent;
-                                    if (Object.keys(pageDict).length === pdf.numPages) {
-                                        parsePdf(pageDict);
-                                        loadPages(pageDict, truePages);
-                                    }
-                                });
-                            });
-                        }
-                    });
-                };
-                fileReader.readAsArrayBuffer(file);
-            }
-        });
-
-        function loadPages(pageDict, truePages) {
-            var id;
-            var trueId;
-            var pages;
-            var rx = /[A-Z]+-[0-9]+/;
-            for (var i = 0; i < Object.keys(pageDict).length; i++) {
-                if (rx.test(pageDict[i].items[0].str)) {
-                    if (pageDict[i].items[0].str !== id) {
-                        if (id) {
-                            trueId = rx.exec(id)[0];
-                            moduleDict[trueId]["modulePages"] = pages;
-                        }
-
-                        id = pageDict[i].items[0].str;
-                        pages = [];
-                        pages.push(truePages[i]);
-                    } else {
-                        pages.push(truePages[i]);
-                    }
-                }
-            }
-        }
-
-        function parsePdf(pageDict) {
-            var page1 = pageDict[0];
-            var uni = page1.items[0].str + " " + page1.items[1].str;
-
-            var x = 2;
-
-            if (uni.startsWith('Lehrveranstaltungen')) {
-                uni = page1.items[1].str + " " + page1.items[2].str;
-                x = 3;
-            }
-
-            // Check if the PDF contains a Modulhandbuch from the university of Augsburg
-            if (uni === "Universität Augsburg Modulhandbuch") {
-                var course;
-                for (j = x; !page1.items[j].str.startsWith("Fakultät"); j++) {
-                    if (j === x) {
-                        course = page1.items[2].str
-                    } else {
-                        course += page1.items[j].str;
-                    }
-                }
-                var faculty = page1.items[j].str;
-                var semester = page1.items[j + 1].str;
-            } else {
-                waitingDialog.hide();
-                alert("File could not be loaded");
-                return;
-            }
-
-            // Page to the table of contents
-            var i = 1;
-            while (pageDict[i].items[0].str !== "Inhaltsverzeichnis") {
-                i++;
-            }
-
-            // Read first moduleGroup
-            var moduleGroupHeight = pageDict[i].items[2].height;
-            var moduleGroup = "";
-            var moduleName = "";
-            var moduleId;
-            var moduleLp;
-            var item;
-            var rx = /^[A-Z]+-[0-9]+/;
-            var rx2 = /(\.|\s|\+)+[0-9]+$/;
-            var rx3 = /(?=(\([0-9]*\sECTS(\/|\s)+LP)).*$/;
-            var rx4 = /\([0-9]*\sECTS/;
-            for (j = 2; j < pageDict[i].items.length; j++) {
-                item = pageDict[i].items[j];
-                if (item.height === moduleGroupHeight) {
-                    if (pageDict[i].items[j - 1].height === moduleGroupHeight && j !== 2) {
-                        moduleGroup += " " + item.str;
-                    } else {
-                        moduleGroup = item.str;
-                        moduleName = "";
-                    }
-                } else {
-                    if (rx.test(item.str)) {
-                        moduleName = item.str;
-                        moduleId = rx.exec(item.str)[0];
-
-                        if (rx2.test(moduleName)) {
-                            moduleLp = rx4.exec(moduleName)[0];
-                            moduleLp = moduleLp.substring(1, moduleLp.length - 5);
-                            var module = {
-                                moduleName: moduleName.replace(rx3.exec(moduleName)[0], ""),
-                                moduleGroup: [moduleGroup],
-                                moduleLp: moduleLp
-                            }
-
-                            if (moduleDict[moduleId] !== undefined) {
-                                moduleDict[moduleId].moduleGroup.push(moduleGroup);
-                            } else {
-                                moduleDict[moduleId] = module;
-                            }
-
-                            moduleName = "";
-                        }
-                    } else {
-                        if (moduleName !== "") {
-                            if (rx2.test(moduleName + " " + item.str)) {
-                                //moduleName += item.str.replace(rx2.exec(item.str)[0], "");
-                                moduleName += " " + item.str;
-                                moduleLp = rx4.exec(moduleName)[0];
-                                moduleLp = moduleLp.substring(1, moduleLp.length - 5);
-                                var module = {
-                                    moduleName: moduleName.replace(rx3.exec(moduleName)[0], ""),
-                                    moduleGroup: [moduleGroup],
-                                    moduleLp: moduleLp
-                                }
-
-                                if (moduleDict[moduleId] !== undefined) {
-                                    moduleDict[moduleId].moduleGroup.push(moduleGroup);
-                                } else {
-                                    moduleDict[moduleId] = module;
-                                }
-
-                                moduleName = "";
-                            } else {
-                                moduleName += " " + item.str;
-                            }
-                        }
-                    }
-                }
-            }
-
-            i++;
-
-            // Continue reading the table of contents until the end is reached
-            while (pageDict[i].items[0].str === "Inhaltsverzeichnis") {
-                for (j = 1; j < pageDict[i].items.length; j++) {
-                    item = pageDict[i].items[j];
-                    if (item.height === moduleGroupHeight) {
-                        if (pageDict[i].items[j - 1].height === moduleGroupHeight && j !== 1) {
-                            moduleGroup += " " + item.str;
-                        } else {
-                            moduleGroup = item.str;
-                            moduleName = "";
-                        }
-                    } else {
-                        if (rx.test(item.str)) {
-                            moduleName = item.str;
-                            moduleId = rx.exec(item.str)[0];
-
-                            if (rx2.test(moduleName)) {
-                                moduleLp = rx4.exec(moduleName)[0];
-                                moduleLp = moduleLp.substring(1, moduleLp.length - 5);
-                                var module = {
-                                    moduleName: moduleName.replace(rx3.exec(moduleName)[0], ""),
-                                    moduleGroup: [moduleGroup],
-                                    moduleLp: moduleLp
-                                }
-
-                                if (moduleDict[moduleId] !== undefined) {
-                                    moduleDict[moduleId].moduleGroup.push(moduleGroup);
-                                } else {
-                                    moduleDict[moduleId] = module;
-                                }
-
-                                moduleName = "";
-                            }
-                        } else {
-                            if (moduleName !== "") {
-                                if (rx2.test(moduleName + " " + item.str)) {
-                                    //moduleName += item.str.replace(rx2.exec(item.str)[0], "");
-                                    moduleName += " " + item.str;
-                                    moduleLp = rx4.exec(moduleName)[0];
-                                    moduleLp = moduleLp.substring(1, moduleLp.length - 5);
-                                    var module = {
-                                        moduleName: moduleName.replace(rx3.exec(moduleName)[0], ""),
-                                        moduleGroup: [moduleGroup],
-                                        moduleLp: moduleLp
-                                    }
-
-                                    if (moduleDict[moduleId] !== undefined) {
-                                        moduleDict[moduleId].moduleGroup.push(moduleGroup);
-                                    } else {
-                                        moduleDict[moduleId] = module;
-                                    }
-
-                                    moduleName = "";
-                                } else {
-                                    moduleName += " " + item.str;
-                                }
-                            }
-                        }
-                    }
-                }
-                i++;
-            }
-
-            Object.keys(moduleDict).forEach(function (currentKey) {
-                var mg = moduleDict[currentKey].moduleGroup;
-                for (var i = 0; i < mg.length; i++) {
-                    if (moduleGroups.indexOf(mg[i]) < 0) {
-                        moduleGroups.push(mg[i]);
-                    }
-                }
-            });
-
-            moduleGroups.sort();
-
-            localStorage.setItem("moduleDict", JSON.stringify(moduleDict));
-
-            localStorage.setItem("moduleGroups", JSON.stringify(moduleGroups));
-
-            waitingDialog.hide();
-        }
-
-        function loadSave() {
-            moduleDict = JSON.parse(localStorage.getItem("moduleDict"));
-            moduleGroups = JSON.parse(localStorage.getItem("moduleGroups"));
-            modulesSelected = JSON.parse(localStorage.getItem("modulesSelected"));
-
-            if (modulesSelected) {
-                for (var i = 0; i < modulesSelected.length; i++) {
-                    //displayModule(modulesSelected[i]);
-                }
-            }
-
-            updateSum();
-            showModuleSum();
-            markModulesGreen();
-        }
-
-        var waitingDialog = waitingDialog || (function ($) {
-            'use strict';
-
-            // Creating modal dialog's DOM
-            var $dialog = $(
-                '<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;">' +
-                '<div class="modal-dialog modal-m">' +
-                '<div class="modal-content">' +
-                '<div class="modal-header"><h3 style="margin:0;"></h3></div>' +
-                '<div class="modal-body">' +
-                '<div class="progress progress-striped active" style="margin-bottom:0;"><div class="progress-bar" style="width: 100%"></div></div>' +
-                '</div>' +
-                '</div></div></div>');
-
-            return {
-                /**
-                 * Opens our dialog
-                 * @param message Custom message
-                 * @param options Custom options:
-                 * 				  options.dialogSize - bootstrap postfix for dialog size, e.g. "sm", "m";
-                 * 				  options.progressType - bootstrap postfix for progress bar type, e.g. "success", "warning".
-                 */
-                show: function (message, options) {
-                    // Assigning defaults
-                    if (typeof options === 'undefined') {
-                        options = {};
-                    }
-                    if (typeof message === 'undefined') {
-                        message = 'Loading';
-                    }
-                    var settings = $.extend({
-                        dialogSize: 'm',
-                        progressType: '',
-                        onHide: null // This callback runs after the dialog was hidden
-                    }, options);
-
-                    // Configuring dialog
-                    $dialog.find('.modal-dialog').attr('class', 'modal-dialog').addClass('modal-' + settings.dialogSize);
-                    $dialog.find('.progress-bar').attr('class', 'progress-bar');
-                    if (settings.progressType) {
-                        $dialog.find('.progress-bar').addClass('progress-bar-' + settings.progressType);
-                    }
-                    $dialog.find('h3').text(message);
-                    // Adding callbacks
-                    if (typeof settings.onHide === 'function') {
-                        $dialog.off('hidden.bs.modal').on('hidden.bs.modal', function (e) {
-                            settings.onHide.call($dialog);
-                        });
-                    }
-                    // Opening dialog
-                    $dialog.modal();
-                },
-                /**
-                 * Closes dialog
-                 */
-                hide: function () {
-                    $dialog.modal('hide');
-                }
-            };
-
-        })(jQuery);
-    </script>
 </body>
 
 </html>

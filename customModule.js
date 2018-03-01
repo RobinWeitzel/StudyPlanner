@@ -1,38 +1,41 @@
-RemoteStorage.defineModule('study-planner', function (privateClient) {
-
-    privateClient.declareType('course', {
-        "type": "object",
-        "properties": {
-            "moduleId": { type: 'string' },
-            "moduleGroup": { type: 'string' },
-            "mark": { type: 'string' },
-            "moduleLp": { type: 'string' },
-            "semester": { type: 'string' },
-            "moduleName": { type: 'string' },
-        },
-        "required": ["moduleId", "moduleGroup", "moduleName", "moduleLp"]
-    });
-
-    // Return and export public functions
-    return {
-        exports: {
-            init: function () {
-                privateClient.cache('');
+const studyPlanner = {
+    name: 'courses', builder: function (privateClient, publicClient) {
+        privateClient.declareType('course', {
+            "type": "object",
+            "properties": {
+                "id": { type: 'string' },
+                "ects": { type: 'number' },
+                "chapter": { type: 'object' },
+                "subChapter": { type: 'array' },
+                "mark": { type: 'number' },
+                "semester": { type: 'string' },
+                "name": { type: 'string' },
+                "optional": {type: 'string'}
             },
+            "required": ["id", "name", "chapter"]
+        });
 
-            on: privateClient.on,
+        // Return and export public functions
+        return {
+            exports: {
+                init: function () {
+                    privateClient.cache('');
+                },
 
-            addCourse: function (course) {
-                return privateClient.storeObject('course', course.moduleId, course);
-            },
+                on: privateClient.on,
 
-            getCourse: privateClient.getObject.bind(privateClient),
+                add: function (course) {
+                    return privateClient.storeObject('course', course.id, course);
+                },
 
-            removeCourse: privateClient.remove.bind(privateClient),
+                get: privateClient.getObject.bind(privateClient),
 
-            listCourses: function () {
-                return privateClient.getAll('');
+                remove: privateClient.remove.bind(privateClient),
+
+                listCourses: function () {
+                    return privateClient.getAll('');
+                }
             }
-        }
-    };
-});
+        };
+    }
+}

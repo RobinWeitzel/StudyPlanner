@@ -1,0 +1,22 @@
+header {
+    overflow: auto;
+    height: 100vh;
+}
+
+.container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+header:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: url(background.jpeg);
+    opacity: 0.6;
+    background-size: cover;
+}
