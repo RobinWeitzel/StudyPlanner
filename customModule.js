@@ -25,7 +25,7 @@ const studyPlanner = {
                 on: privateClient.on,
 
                 add: function (course) {
-                    return privateClient.storeObject('course', course.id, course);
+                    return privateClient.storeObject('course', course.id.toLowerCase(), course);
                 },
 
                 get: privateClient.getObject.bind(privateClient),

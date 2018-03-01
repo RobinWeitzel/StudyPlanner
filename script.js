@@ -191,7 +191,7 @@ const fillTable = () => {
                             <input data-id="${k}" class="semester form-control form-control-sm" type="text" value="${m.semester || ''}">
                         </td>
                         <td style="text-align: center;">
-                            <input data-id="${k}" class="mark form-control form-control-sm" type="text" value="${m.mark || ''}">
+                            <input data-id="${k}" class="mark form-control form-control-sm" type="text" value="${m.mark < 7 ? m.mark : ''}">
                         </td>
                         <td style="text-align: right;" class="ects" data-id="${k}">
                             ${m.mark && m.mark !== '' && !isNaN(m.mark) && m.mark <= 4 ? m.ects : 0}
@@ -495,7 +495,7 @@ $('#exampleModalLong').on('shown.bs.modal', () => {
 
 $(document).on('input', '.mark', e => {
     const value = e.currentTarget.value.replace(',', '.');
-    const mark = value !== '' && !isNaN(value) ? parseFloat(value, 10) : '';
+    const mark = value !== '' && !isNaN(value) ? parseFloat(value, 10) : 7;
     const oldMark = chosenModules.get(e.currentTarget.dataset.id).mark;
     const chapter = chosenModules.get(e.currentTarget.dataset.id).chapter;
     chosenModules.get(e.currentTarget.dataset.id).mark = mark;
