@@ -356,7 +356,7 @@ $(document).on('click', '.filter', (e) => {
         faIcon.removeClass('fa-square');
         faIcon.addClass('fa-check-square');
 
-        const summerTerm = (new Date).getMonth() > 2 && (new Date).getMonth() < 9;
+        const summerTerm = (new Date).getMonth() >= 2 && (new Date).getMonth() < 8;
 
         if (summerTerm) {
             $('.module2[data-term="jedes Wintersemester"]').attr('data-term-filter', false);
