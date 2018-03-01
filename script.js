@@ -597,7 +597,9 @@ init = () => {
     remoteStorage.on('ready', () => {
         remoteStorage.courses.listCourses().then(objects => {
             for (var path in objects) {
-                chosenModules.set(objects[path].id, objects[path]);
+                if(objects[path].id) {
+                    chosenModules.set(objects[path].id, objects[path]);
+                }
             }
             fillTable();
         });
