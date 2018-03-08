@@ -549,7 +549,7 @@ $('#remove-modules').on('click', e => {
     $('.module .fa-check-square').each((index, fa) => {
         const chapter = chosenModules.get(fa.dataset.id).chapter;
         chosenModules.delete(fa.dataset.id);
-        remoteStorage.courses.remove(fa.dataset.id);
+        remoteStorage.courses.remove(fa.dataset.id.toLowerCase());
         $('.module[data-id="' + fa.dataset.id + '"]').remove();
 
         let counter = 0;
