@@ -577,7 +577,7 @@ init = () => {
     });
 
     const widget = new Widget(remoteStorage);
-    widget.attach('widget-container');
+    widget.attach();
 
     remoteStorage.courses.init();
 
