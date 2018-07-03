@@ -91,7 +91,7 @@ const parseTableOfContents = pages => {
                             max: helper[1]
                         }
                     }
-                } catch {
+                } catch (e) {
                     ects = {
                         min: 0,
                         max: 0
@@ -110,7 +110,7 @@ const parseTableOfContents = pages => {
                 const id = startsWithModuleName.exec(line)[0]; // 0 is the whole matched string
                 try {
                     ects = parseInt(inMiddleEcts.exec(line)[1], 10); // 1 is the first matched parenthesis
-                } catch {
+                } catch (e) {
                     ects = 0
                 }
                 let optional;
@@ -126,7 +126,7 @@ const parseTableOfContents = pages => {
                     name: name
                 });
             }
-        } catch {
+        } catch (e) {
             console.error("Error in line: " + line);
         }
     });
